@@ -1,8 +1,14 @@
 import { Column, Entity } from 'typeorm';
 import { CoreEntity } from '../../common/entities/core.entity';
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 
-type UserRole = 'client' | 'owner' | 'delivery';
+enum UserRole {
+  Client,
+  Owner,
+  Delivery,
+}
+
+registerEnumType(UserRole, { name: 'UserRole' });
 
 @ObjectType()
 @Entity()
@@ -15,7 +21,7 @@ export class User extends CoreEntity {
   @Field(() => String)
   password: string;
 
-  @Column()
-  @Field(() => String)
+  @Column({ type: 'enum', enum: UserRole })
+  @Field(() => UserRole)
   role: UserRole;
 }
