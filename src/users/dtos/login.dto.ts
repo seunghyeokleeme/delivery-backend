@@ -11,6 +11,6 @@ export class LoginInput extends PickType(
 
 @ObjectType()
 export class LoginOutput extends MutationOutput {
-  @Field(() => String)
-  token: string;
+  @Field(() => String, { nullable: true })
+  token?: string;
 }
