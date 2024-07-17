@@ -33,12 +33,10 @@ export class UsersService {
       );
       return { ok: true };
     } catch (e) {
-      // make error
       return {
         ok: false,
         error: "Couldn't create account!",
       };
     }
-    // create user & hash the password
   }
 }
