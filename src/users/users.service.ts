@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateAccountInput } from './dtos/create-account.dto';
 import { LoginInput } from './dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { EditProfileInput } from './dtos/edit-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -86,5 +87,9 @@ export class UsersService {
         id,
       },
     });
+  }
+
+  async editProfile(userId: number, { email, password }: EditProfileInput) {
+    this.usersRepository.update(userId, { email, password });
   }
 }
