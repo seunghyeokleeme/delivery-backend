@@ -77,7 +77,6 @@ export class UsersResolver {
     @Args('input') editProfileInput: EditProfileInput,
   ): Promise<EditProfileOutput> {
     try {
-      console.log(editProfileInput);
       await this.usersService.editProfile(authUser.id, editProfileInput);
 
       return {
