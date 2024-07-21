@@ -10,10 +10,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { CommonModule } from './common/common.module';
 import { User } from './users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddleware } from './jwt/jwt.middleware';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -50,12 +50,11 @@ import { JwtMiddleware } from './jwt/jwt.middleware';
       autoSchemaFile: true,
       context: ({ req }) => ({ user: req['user'] }),
     }),
-    UsersModule,
-    CommonModule,
     JwtModule.register({
       global: true,
       secret: process.env.SECRET_KEY,
     }),
+    UsersModule,
   ],
   controllers: [],
   providers: [],
