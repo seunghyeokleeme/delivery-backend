@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import * as Joi from 'joi';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -43,12 +43,12 @@ import { JwtModule } from '@nestjs/jwt';
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
+    UsersModule,
+    CommonModule,
     JwtModule.register({
       global: true,
       secret: process.env.SECRET_KEY,
     }),
-    UsersModule,
-    CommonModule,
   ],
   controllers: [],
   providers: [],
