@@ -56,6 +56,10 @@ export class UsersService {
   }: LoginInput): Promise<{ ok: boolean; error?: string; token?: string }> {
     try {
       const user = await this.usersRepository.findOne({
+        select: {
+          id: true,
+          password: true,
+        },
         where: {
           email,
         },
@@ -73,7 +77,6 @@ export class UsersService {
           error: 'Wrong password',
         };
       }
-      // 토큰 생성
       const access_token = this.jwtService.sign({ sub: user.id });
       return {
         ok: true,
@@ -118,20 +121,27 @@ export class UsersService {
   }
 
   async verifyEmail(code: string): Promise<boolean> {
-    const verification = await this.verificationsRepository.findOne({
-      where: {
-        code,
-      },
-      relations: {
-        user: true,
-      },
-    });
+    try {
+      const verification = await this.verificationsRepository.findOne({
+        where: {
+          code,
+        },
+        relations: {
+          user: true,
+        },
+      });
 
-    if (verification) {
-      verification.user.verified = true;
-      this.usersRepository.save(verification.user);
+      if (verification) {
+        verification.user.verified = true;
+        console.log(verification.user);
+        this.usersRepository.save(verification.user);
+        return true;
+      }
+
+      throw new Error();
+    } catch (e) {
+      console.log(e);
+      return false;
     }
-
-    return false;
   }
 }
